@@ -21,7 +21,8 @@ function downloadVideo() {
   const url = document.getElementById('video-url').value;
   if (url) {
       displayLoadingState(true);
-      fetch(`/videoInfo?url=${encodeURIComponent(url)}`)
+      // Update the endpoint to point to the serverless function
+      fetch(`/api/videoInfo?url=${encodeURIComponent(url)}`)
           .then(response => response.json())
           .then(data => {
               if (data.success) {
@@ -42,6 +43,14 @@ function downloadVideo() {
       alert('Please enter a valid YouTube URL.');
   }
 }
+
+function fetchVideo() {
+  const itag = document.getElementById('resolutionSelector').value;
+  const url = document.getElementById('video-url').value;
+  // Update the endpoint to point to the serverless function
+  window.location.href = `/api/download?url=${encodeURIComponent(url)}&itag=${itag}`;
+}
+
 
 function displayLoadingState(isLoading) {
   const button = document.querySelector('.container button');
