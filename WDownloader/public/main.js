@@ -21,22 +21,16 @@ function downloadVideo() {
   const url = document.getElementById('video-url').value;
   if (url) {
       displayLoadingState(true);
-      // Update the endpoint to point to the serverless function
-      fetch(`/api/videoInfo?url=${encodeURIComponent(url)}`)
-      .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-              addToHistory(url);
-              showPopup(data.info);
-          } else {
-              alert(`Failed to fetch video info: ${data.message}`);
-          }
-      })
+      fetch(`/videoInfo?url=${encodeURIComponent(url)}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  addToHistory(url);
+                  showPopup(data.info);
+              } else {
+                  alert('Failed to fetch video info: ' + data.message);
+              }
+          })
           .catch(error => {
               console.error('Error:', error);
               alert('An error occurred while fetching video info.');
@@ -48,14 +42,6 @@ function downloadVideo() {
       alert('Please enter a valid YouTube URL.');
   }
 }
-
-function fetchVideo() {
-  const itag = document.getElementById('resolutionSelector').value;
-  const url = document.getElementById('video-url').value;
-  // Update the endpoint to point to the serverless function
-  window.location.href = `/api/download?url=${encodeURIComponent(url)}&itag=${itag}`;
-}
-
 
 function displayLoadingState(isLoading) {
   const button = document.querySelector('.container button');
