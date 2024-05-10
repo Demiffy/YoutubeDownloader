@@ -7,9 +7,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="header">
+        <h1>YouTube Downloader</h1>
+    </div>
     <div class="main-layout">
         <div class="container">
-            <h1>YouTube Video Downloader</h1>
+            <h1>URL</h1>
             <input type="text" id="video-url" placeholder="Enter YouTube video URL">
             <button onclick="downloadVideo()">Download</button>
         </div>
@@ -27,7 +30,7 @@
                 <p id="videoAuthor">By <span></span></p>
             </div>
             <select id="resolutionSelector" class="resolution-selector"></select>
-            <button onclick="fetchVideo()">Download Selected Quality</button>
+            <button onclick="fetchVideo()">Download</button>
         </div>
     </div>
     <!-- Dark mode toggle switch -->
@@ -36,6 +39,17 @@
         <label for="darkModeToggle">Toggle Dark Mode</label>
     </div>
 
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h5>Demiffy</h5>
+            </div>
+        </div>
+
+        <a href="https://demiffy.vercel.app/" target="_blank" class="footer-logo">
+            <img src="DMLogoP.png" alt="SBIS Logo">
+        </a>
+    </footer>
     <script src="main.js"></script>
 </body>
 </html>

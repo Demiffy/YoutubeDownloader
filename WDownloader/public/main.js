@@ -1,3 +1,22 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // Load saved theme setting on initial load
+  const savedTheme = localStorage.getItem('theme');
+  const isDarkMode = savedTheme === 'dark';
+  const elementsToToggle = document.querySelectorAll('body, .container, .history-container, .popup-content, input[type="text"], button');
+
+  // Apply the dark mode class based on the saved setting
+  elementsToToggle.forEach(el => {
+      el.classList.toggle('dark-mode', isDarkMode);
+  });
+
+  // Set the checkbox state based on the saved theme
+  document.getElementById('darkModeToggle').checked = isDarkMode;
+
+  // Load the download history from localStorage
+  loadHistory();
+});
+
+
 function downloadVideo() {
   const url = document.getElementById('video-url').value;
   if (url) {
@@ -34,6 +53,7 @@ function showPopup(videoInfo) {
   document.getElementById('videoThumbnail').src = videoInfo.thumbnail;
   document.getElementById('videoTitle').textContent = videoInfo.title;
   document.getElementById('videoAuthor').textContent = videoInfo.author.name;
+  
   const selector = document.getElementById('resolutionSelector');
   selector.innerHTML = '';
   videoInfo.formats.forEach(format => {
@@ -59,23 +79,43 @@ function toggleDarkMode() {
   const isChecked = document.getElementById('darkModeToggle').checked;
   const elementsToToggle = document.querySelectorAll('body, .container, .history-container, .popup-content, input[type="text"], button');
 
+  // Save theme preference
+  localStorage.setItem('theme', isChecked ? 'dark' : 'light');
+
   elementsToToggle.forEach(el => {
-      if (isChecked) {
-          el.classList.add('dark-mode');
-      } else {
-          el.classList.remove('dark-mode');
-      }
+      el.classList.toggle('dark-mode', isChecked);
   });
 }
 
 function addToHistory(url) {
   const historyList = document.getElementById('downloadHistory');
   if (!historyList) return;
+
   const listItem = document.createElement('li');
   listItem.textContent = url;
   listItem.onclick = function() {
       document.getElementById('video-url').value = url;
       downloadVideo();
   };
+
+  // Manage history size
+  const existingItems = historyList.getElementsByTagName('li');
+  if (existingItems.length >= 5) {
+      historyList.removeChild(existingItems[0]);
+  }
   historyList.appendChild(listItem);
+
+  // Update localStorage with new history
+  updateHistoryStorage();
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+  history.forEach(url => addToHistory(url));
+}
+
+function updateHistoryStorage() {
+  const historyList = document.querySelectorAll('#downloadHistory li');
+  const history = Array.from(historyList).map(li => li.textContent);
+  localStorage.setItem('downloadHistory', JSON.stringify(history));
 }
