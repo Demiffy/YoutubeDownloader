@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube Downloader</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main-layout">
+        <div class="container">
+            <h1>YouTube Video Downloader</h1>
+            <input type="text" id="video-url" placeholder="Enter YouTube video URL">
+            <button onclick="downloadVideo()">Download</button>
+        </div>
+        <div class="history-container">
+            <h2>Download History</h2>
+            <ul id="downloadHistory"></ul>
+        </div>
+    </div>
+    <div id="downloadPopup" class="popup" style="display:none;">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <img id="videoThumbnail" src="" alt="Video Thumbnail" class="thumbnail">
+            <div class="video-info">
+                <h2 id="videoTitle">Video Title</h2>
+                <p id="videoAuthor">By <span></span></p>
+            </div>
+            <select id="resolutionSelector" class="resolution-selector"></select>
+            <button onclick="fetchVideo()">Download Selected Quality</button>
+        </div>
+    </div>
+    <!-- Dark mode toggle switch -->
+    <div class="dark-mode-switch">
+        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+        <label for="darkModeToggle">Toggle Dark Mode</label>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
