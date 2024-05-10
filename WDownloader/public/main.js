@@ -23,15 +23,20 @@ function downloadVideo() {
       displayLoadingState(true);
       // Update the endpoint to point to the serverless function
       fetch(`/api/videoInfo?url=${encodeURIComponent(url)}`)
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  addToHistory(url);
-                  showPopup(data.info);
-              } else {
-                  alert('Failed to fetch video info: ' + data.message);
-              }
-          })
+      .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+              addToHistory(url);
+              showPopup(data.info);
+          } else {
+              alert(`Failed to fetch video info: ${data.message}`);
+          }
+      })
           .catch(error => {
               console.error('Error:', error);
               alert('An error occurred while fetching video info.');
